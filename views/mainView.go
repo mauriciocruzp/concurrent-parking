@@ -4,7 +4,6 @@ import (
 	"concurrent-parking/models"
 	"concurrent-parking/scenes"
 	"fmt"
-	"math/rand"
 	"sync"
 	"time"
 )
@@ -15,9 +14,11 @@ func NewMainView() *MainView {
 	return &MainView{}
 }
 
-func (v *MainView) Run() {
-	rand.Seed(time.Now().UnixNano())
+func (v *MainView) Show() {
 
+}
+
+func (v *MainView) Run() {
 	p := scenes.NewParking(make(chan int, 20), &sync.Mutex{})
 	poissonDist := models.NewPoissonDist()
 
@@ -31,7 +32,7 @@ func (v *MainView) Run() {
 			v := models.NewCar(id)
 			v.Park(p)
 		}(i)
-		var randPoissonNumber = poissonDist.Generate(float64(143))
+		var randPoissonNumber = poissonDist.Generate(float64(3))
 		fmt.Println(randPoissonNumber)
 		time.Sleep(time.Second * time.Duration(randPoissonNumber))
 	}
