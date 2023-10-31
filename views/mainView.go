@@ -17,9 +17,10 @@ func (v *MainView) Run() {
 	window := myApp.NewWindow("Parking")
 	window.CenterOnScreen()
 	window.SetFixedSize(true)
-	window.Resize(fyne.NewSize(1000, 650))
+	window.Resize(fyne.NewSize(350, 650))
 
 	mainScene := scenes.NewMainScene(window)
+	mainScene.Show()
 	go mainScene.Run()
 	window.ShowAndRun()
 }
