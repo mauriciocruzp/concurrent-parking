@@ -36,7 +36,7 @@ func (c *Car) Enter(p *Parking, carsContainer *fyne.Container) {
 	spacesArray := p.GetSpacesArray()
 
 	p.GetSpaces() <- c.GetId()
-	fmt.Printf("Vehicle %d entered the parking. Spaces left: %d\n", c.GetId(), len(p.GetSpaces()))
+	fmt.Printf("Auto %d ha entrado. Espacios ocupados: %d\n", c.GetId(), len(p.GetSpaces()))
 
 	for i := 0; i < 5; i++ {
 		c.image.Move(fyne.NewPos(c.image.Position().X+20, c.image.Position().Y))
@@ -61,18 +61,19 @@ func (c *Car) Enter(p *Parking, carsContainer *fyne.Container) {
 func (c *Car) Leave(p *Parking, carsContainer *fyne.Container) {
 	p.GetEntrance().Lock()
 	<-p.GetSpaces()
-	fmt.Printf("Vehicle %d left the parking. Spaces left: %d\n", c.GetId(), len(p.GetSpaces()))
-	for i := 0; i < 10; i++ {
-		c.exitImage.Move(fyne.NewPos(c.exitImage.Position().X-30, c.exitImage.Position().Y))
-		time.Sleep(time.Millisecond * 200)
-	}
-	p.GetEntrance().Unlock()
 
 	spacesArray := p.GetSpacesArray()
 	spacesArray[c.space] = false
 	p.SetSpacesArray(spacesArray)
 
-	time.Sleep(time.Second)
+	fmt.Printf("Auto %d ha salido. Espacios ocupados: %d\n", c.GetId(), len(p.GetSpaces()))
+	p.GetEntrance().Unlock()
+
+	for i := 0; i < 10; i++ {
+		c.exitImage.Move(fyne.NewPos(c.exitImage.Position().X-30, c.exitImage.Position().Y))
+		time.Sleep(time.Millisecond * 200)
+	}
+
 	carsContainer.Remove(c.exitImage)
 	carsContainer.Refresh()
 }
