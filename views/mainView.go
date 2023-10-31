@@ -1,11 +1,9 @@
 package views
 
 import (
-	"concurrent-parking/models"
 	"concurrent-parking/scenes"
-	"fmt"
-	"sync"
-	"time"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
 )
 
 type MainView struct{}
@@ -14,28 +12,14 @@ func NewMainView() *MainView {
 	return &MainView{}
 }
 
-func (v *MainView) Show() {
-
-}
-
 func (v *MainView) Run() {
-	p := scenes.NewParking(make(chan int, 20), &sync.Mutex{})
-	poissonDist := models.NewPoissonDist()
+	myApp := app.New()
+	window := myApp.NewWindow("Parking")
+	window.CenterOnScreen()
+	window.SetFixedSize(true)
+	window.Resize(fyne.NewSize(1000, 650))
 
-	var wg sync.WaitGroup
-
-	for i := 0; i < 100; i++ {
-		wg.Add(1)
-		go func(id int) {
-			defer wg.Done()
-
-			v := models.NewCar(id)
-			v.Park(p)
-		}(i)
-		var randPoissonNumber = poissonDist.Generate(float64(3))
-		fmt.Println(randPoissonNumber)
-		time.Sleep(time.Second * time.Duration(randPoissonNumber))
-	}
-
-	wg.Wait()
+	mainScene := scenes.NewMainScene(window)
+	go mainScene.Run()
+	window.ShowAndRun()
 }
