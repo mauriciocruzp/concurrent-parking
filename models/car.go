@@ -23,7 +23,7 @@ func NewCar(id int) *Car {
 	exitImage := canvas.NewImageFromURI(storage.NewFileURI("./assets/car_exit.png"))
 	return &Car{
 		id:          id,
-		parkingTime: time.Duration(rand.Intn(5)+15) * time.Second,
+		parkingTime: time.Duration(rand.Intn(5)+10) * time.Second,
 		image:       image,
 		space:       0,
 		exitImage:   exitImage,
