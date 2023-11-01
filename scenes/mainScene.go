@@ -40,7 +40,7 @@ func (s *MainScene) Show() {
 }
 
 func (s *MainScene) Run() {
-	p := models.NewParking(make(chan int, 20), &sync.Mutex{})
+	p := models.NewParking(make(chan int, 5), &sync.Mutex{})
 	poissonDist := models.NewPoissonDist()
 
 	var wg sync.WaitGroup

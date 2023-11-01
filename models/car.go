@@ -23,7 +23,7 @@ func NewCar(id int) *Car {
 	exitImage := canvas.NewImageFromURI(storage.NewFileURI("./assets/car_exit.png"))
 	return &Car{
 		id:          id,
-		parkingTime: time.Duration(rand.Intn(5)+10) * time.Second,
+		parkingTime: time.Duration(rand.Intn(10)+10) * time.Second,
 		image:       image,
 		space:       0,
 		exitImage:   exitImage,
@@ -31,11 +31,11 @@ func NewCar(id int) *Car {
 }
 
 func (c *Car) Enter(p *Parking, carsContainer *fyne.Container) {
+	p.GetSpaces() <- c.GetId()
 	p.GetEntrance().Lock()
 
 	spacesArray := p.GetSpacesArray()
 
-	p.GetSpaces() <- c.GetId()
 	fmt.Printf("Auto %d ha entrado. Espacios ocupados: %d\n", c.GetId(), len(p.GetSpaces()))
 
 	for i := 0; i < 5; i++ {
